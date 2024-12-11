@@ -3,11 +3,12 @@ import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
 
-const Card = styled.div`
+const Card = styled.div<{ isDragging: boolean }>`
 border-radius: 5px;
 margin-bottom: 5px;
 padding: 10px 10px;
-background-color: ${(props) => props.theme.cardColor};
+background-color: ${(props) => props.isDragging ? "#74b9ff" : props.theme.cardColor};
+box-shadow: ${(props) => props.isDragging ? "0px 0px 5px rgba(0,0,0,0.05)" : "none"};
 `;
 
 
@@ -19,9 +20,10 @@ interface IDragabbleCardProps {
 function DragabbleCard({ toDo, index }: IDragabbleCardProps) {
     return (
         <Draggable key={toDo} draggableId={toDo} index={index}>
-            {(magic) => (
+            {(magic, snapshot) => (
                 <Card
-                    ref={magic.innerRef}
+                    isDragging={snapshot.isDragging}
+                    ref={magic.innerRef}        //reference란 우리의 react 코드를 이용해 HTML 요소를 지정하고 가져올 수 있는 방법
                     {...magic.draggableProps}
                     {...magic.dragHandleProps}
                 >
