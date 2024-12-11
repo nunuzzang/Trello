@@ -4,6 +4,7 @@ import styled from "styled-components";
 import DragabbleCard from "./DragbbleCard";
 import { IToDo, toDoState } from "../atoms";
 import { useSetRecoilState } from "recoil";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const Wrapper = styled.div`
   width: 300px;
@@ -101,6 +102,7 @@ function Board({ toDos, boardId }: IBoardProps) {
                         {magic.placeholder}
                     </Area>
                 )}
+
             </Droppable>
         </Wrapper>
     );
