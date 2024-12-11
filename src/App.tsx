@@ -22,6 +22,8 @@ const Boards = styled.div`
   gap: 10px;
 `;
 
+
+
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
   const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
