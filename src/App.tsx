@@ -22,16 +22,12 @@ const Boards = styled.div`
   gap: 10px;
 `;
 
-
-
-
-
-
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
   const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
+    if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
-      // 같은 board에서 움직이기
+      // 서로 같은 board에서 움직이기
       setToDos((allBoards) => {
         // 모든 board를 가져오고 source.droppableId 배열을 복사
         const boardCopy = [...allBoards[source.droppableId]]
@@ -44,6 +40,24 @@ function App() {
           [source.droppableId]: boardCopy,
         };
       });
+    }
+    if (destination?.droppableId !== source.droppableId) {
+      // 서로 다른 board에서 움직이기
+      setToDos((allBoards) => {
+        // 모든 board를 가져오고 source.droppableId 배열을 복사
+        const sourceBoard = [...allBoards[source.droppableId]];
+        // 모든 board를 가져오고 destination.droppableId 배열을 복사
+        const destinationBoard = [...allBoards[destination.droppableId]];
+        // 복사본을 변형
+        sourceBoard.splice(source.index, 1);
+        destinationBoard.splice(destination.index, 0, draggableId);
+        // 모든 board들을 return하고 추가로 변형된 복사본도 같이 return
+        return {
+          ...allBoards,
+          [source.droppableId]: sourceBoard,
+          [destination.droppableId]: destinationBoard,
+        }
+      })
     }
   };
   return (
