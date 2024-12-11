@@ -33,9 +33,10 @@ function App() {
       setToDos((allBoards) => {
         // 모든 board를 가져오고 source.droppableId 배열을 복사
         const boardCopy = [...allBoards[source.droppableId]]
+        const taskObj = boardCopy[source.index];
         // 복사본을 변형
         boardCopy.splice(source.index, 1);
-        boardCopy.splice(destination?.index, 0, draggableId);
+        boardCopy.splice(destination?.index, 0, taskObj);
         // 모든 board들을 return하고 추가로 변형된 복사본도 같이 return
         return {
           ...allBoards,
@@ -48,11 +49,12 @@ function App() {
       setToDos((allBoards) => {
         // 모든 board를 가져오고 source.droppableId 배열을 복사
         const sourceBoard = [...allBoards[source.droppableId]];
+        const taskObj = sourceBoard[source.index];
         // 모든 board를 가져오고 destination.droppableId 배열을 복사
         const destinationBoard = [...allBoards[destination.droppableId]];
         // 복사본을 변형
         sourceBoard.splice(source.index, 1);
-        destinationBoard.splice(destination.index, 0, draggableId);
+        destinationBoard.splice(destination.index, 0, taskObj);
         // 모든 board들을 return하고 추가로 변형된 복사본도 같이 return
         return {
           ...allBoards,

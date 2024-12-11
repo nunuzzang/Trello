@@ -1,18 +1,19 @@
+import { useForm } from "react-hook-form";
 import { Droppable } from "react-beautiful-dnd";
-import DragabbleCard from "./DragbbleCard";
 import styled from "styled-components";
-import { ReactHTML, useRef } from "react";
+import DragabbleCard from "./DragbbleCard";
+import { IToDo, toDoState } from "../atoms";
+import { useSetRecoilState } from "recoil";
 
 const Wrapper = styled.div`
   width: 300px;
-  padding: 10px;
   padding-top: 10px;
   background-color: ${(props) => props.theme.boardColor};
   border-radius: 5px;
-  min-height: 200px;
   min-height: 300px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 const Title = styled.h2`
@@ -23,49 +24,64 @@ const Title = styled.h2`
 `;
 
 interface IAreaProps {
-    isDraggingOver: boolean;
     isDraggingFromThis: boolean;
+    isDraggingOver: boolean;
 }
 
-const Area = styled.div <IAreaProps>`
-    background-color: ${(props) => props.isDraggingOver ? "#dfe6e9" : props.isDraggingFromThis ? "#b2bec3" : "transparent"};
-    flex-grow: 1;
+const Area = styled.div<IAreaProps>`
+  background-color: ${(props) =>
+        props.isDraggingOver
+            ? "#dfe6e9"
+            : props.isDraggingFromThis
+                ? "#b2bec3"
+                : "transparent"};
+  flex-grow: 1;
+  transition: background-color 0.3s ease-in-out;
   padding: 20px;
 `;
 
+const Form = styled.form`
+  width: 100%;
+  input {
+    width: 100%;
+  }
+`;
+
 interface IBoardProps {
-    toDos: string[];
+    toDos: IToDo[];
     boardId: string;
 }
 
-/* 
-//Droppablestate snapshot
-isDraggingOver: boolean
-현재 선택한 Draggable이 특정 Droppable위에 드래깅 되고 있는지 여부 확인
-
-draggingOverWith: ?DraggableId
-Droppable 위로 드래그하는 Draggable ID
-
-draggingFromThisWith: ?DraggableId
-현재 Droppable에서 벗어난 드래깅되고 있는 Draggable ID
-
-isUsingPlaceholder: boolean
-placeholder가 사용되고 있는지 여부 */
+interface IForm {
+    toDo: string;
+}
 
 function Board({ toDos, boardId }: IBoardProps) {
-    // useRef 사용법
-    const inputRef = useRef<HTMLInputElement>(null);
-    const onClick = () => {
-        inputRef.current?.focus();
-        setTimeout(() => {
-            inputRef.current?.blur();
-        }, 5000);
+    const setToDos = useSetRecoilState(toDoState);
+    const { register, setValue, handleSubmit } = useForm<IForm>();
+    const onValid = ({ toDo }: IForm) => {
+        const newToDo = {
+            id: Date.now(),
+            text: toDo,
+        }
+        setToDos((allBoards) => {
+            return {
+                ...allBoards,
+                [boardId]: [...toDos, newToDo],
+            }
+        });
+        setValue("toDo", "");
     };
     return (
         <Wrapper>
             <Title>{boardId}</Title>
-            <input ref={inputRef} placeholder="grab me" />
-            <button onClick={onClick}>Click me</button>
+            <Form onSubmit={handleSubmit(onValid)}>
+                <input
+                    {...register("toDo", { required: true })}
+                    type="text"
+                    placeholder={`Add task on ${boardId}`}
+                />
+            </Form>
             <Droppable droppableId={boardId}>
                 {(magic, info) => (
                     <Area
@@ -75,13 +91,18 @@ function Board({ toDos, boardId }: IBoardProps) {
                         {...magic.droppableProps}
                     >
                         {toDos.map((toDo, index) => (
-                            <DragabbleCard key={toDo} index={index} toDo={toDo} />
+                            <DragabbleCard
+                                key={toDo.id}
+                                index={index}
+                                toDoId={toDo.id}
+                                toDoText={toDo.text}
+                            />
                         ))}
                         {magic.placeholder}
-                    </Area>)}
+                    </Area>
+                )}
             </Droppable>
         </Wrapper>
     );
 }
-
 export default Board;

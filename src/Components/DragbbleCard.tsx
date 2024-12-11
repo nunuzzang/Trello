@@ -2,32 +2,33 @@ import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
-
 const Card = styled.div<{ isDragging: boolean }>`
-border-radius: 5px;
-margin-bottom: 5px;
-padding: 10px 10px;
-background-color: ${(props) => props.isDragging ? "#74b9ff" : props.theme.cardColor};
-box-shadow: ${(props) => props.isDragging ? "0px 0px 5px rgba(0,0,0,0.05)" : "none"};
+  border-radius: 5px;
+  margin-bottom: 5px;
+  padding: 10px;
+  background-color: ${(props) =>
+        props.isDragging ? "#e4f2ff" : props.theme.cardColor};
+  box-shadow: ${(props) =>
+        props.isDragging ? "0px 2px 5px rgba(0, 0, 0, 0.05)" : "none"};
 `;
 
-
 interface IDragabbleCardProps {
-    toDo: string;
+    toDoId: number;
+    toDoText: string;
     index: number;
 }
 
-function DragabbleCard({ toDo, index }: IDragabbleCardProps) {
+function DragabbleCard({ toDoId, toDoText, index }: IDragabbleCardProps) {
     return (
-        <Draggable key={toDo} draggableId={toDo} index={index}>
+        <Draggable draggableId={toDoId + ""} index={index}>
             {(magic, snapshot) => (
                 <Card
                     isDragging={snapshot.isDragging}
-                    ref={magic.innerRef}        //reference란 우리의 react 코드를 이용해 HTML 요소를 지정하고 가져올 수 있는 방법
-                    {...magic.draggableProps}
+                    ref={magic.innerRef}
                     {...magic.dragHandleProps}
+                    {...magic.draggableProps}
                 >
-                    {toDo}
+                    {toDoText}
                 </Card>
             )}
         </Draggable>
