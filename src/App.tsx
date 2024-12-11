@@ -15,10 +15,11 @@ const Wrapper = styled.div`
 `;
 
 const Boards = styled.div`
-  display: grid;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   width: 100%;
   gap: 10px;
-  grid-template-columns: repeat(3, 1fr);
 `;
 
 
@@ -29,15 +30,21 @@ const Boards = styled.div`
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
   const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
-    if (!destination) return;
-    /*     setToDos((oldToDos) => {
-          const toDosCopy = [...oldToDos];
-          // 1) Delete item on source.index
-          toDosCopy.splice(source.index, 1);
-          // 2) Put back the item on the destination.index
-          toDosCopy.splice(destination?.index, 0, draggableId);
-          return toDosCopy;
-        }) */
+    if (destination?.droppableId === source.droppableId) {
+      // 같은 board에서 움직이기
+      setToDos((allBoards) => {
+        // 모든 board를 가져오고 source.droppableId 배열을 복사
+        const boardCopy = [...allBoards[source.droppableId]]
+        // 복사본을 변형
+        boardCopy.splice(source.index, 1);
+        boardCopy.splice(destination?.index, 0, draggableId);
+        // 모든 board들을 return하고 추가로 변형된 복사본도 같이 return
+        return {
+          ...allBoards,
+          [source.droppableId]: boardCopy,
+        };
+      });
+    }
   };
   return (
     <DragDropContext onDragEnd={onDragEnd} >
@@ -49,5 +56,6 @@ function App() {
     </DragDropContext>
   );
 }
+
 
 export default App;
