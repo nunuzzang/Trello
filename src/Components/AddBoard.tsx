@@ -3,6 +3,7 @@ import { useSetRecoilState } from "recoil";
 import { toDoState } from "../atoms";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
+import { CiSquarePlus } from "react-icons/ci";
 
 const Form = styled.form`
   width: 200px;
@@ -22,22 +23,26 @@ const Input = styled.input`
   border-radius: 5px;
 `;
 
-const Button = styled.button`
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
 
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
 
 interface IForm {
     category: string;
 }
+
+const IconStyle = styled(CiSquarePlus)`
+    width: 100px;
+    height: 100px;
+    color: white;
+    &:hover{
+        color:#b0bdc2;
+        transition: color 0.5s ease-in-out;
+    }
+`;
+const AddBoardBTN = styled.button`
+    background-color: inherit;
+    border: none;
+    margin-top: 50px;
+`;
 
 function AddBoard() {
     const setToDos = useSetRecoilState(toDoState);
@@ -55,11 +60,11 @@ function AddBoard() {
     return (
         <Form onSubmit={handleSubmit(addBoard)}>
             <Input
-                {...register("category", { required: false })}
+                {...register("category", { required: true })}
                 type="text"
                 placeholder="보드 추가"
             />
-            <Button type="submit">보드 추가</Button>
+            <AddBoardBTN type="submit" ><IconStyle /></AddBoardBTN>
         </Form>
     );
 }
