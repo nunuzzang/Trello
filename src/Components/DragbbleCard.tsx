@@ -36,7 +36,17 @@ interface IDragabbleCardProps {
 
 function DragabbleCard({ toDoId, toDoText, index }: IDragabbleCardProps) {
     const setTodoState = useSetRecoilState(toDoState);
-    const onClick = () => { console.log(setTodoState) }
+    const onDelete = () => {
+        setTodoState((prevTodos) => {
+            const updatedTodos = { ...prevTodos };
+            const categories = Object.keys(updatedTodos);
+            for (let i = 0; i < (categories.length); i++) {
+                // "To Do", "Doing", "Done" 중 해당 ID를 찾아서 삭제
+                updatedTodos[categories[i]] = updatedTodos[categories[i]].filter((todo) => todo.id !== toDoId);
+            }
+            return updatedTodos;
+        });
+    };
     return (
         <Draggable draggableId={toDoId + ""} index={index}>
             {(magic, snapshot) => (
@@ -47,7 +57,7 @@ function DragabbleCard({ toDoId, toDoText, index }: IDragabbleCardProps) {
                     {...magic.draggableProps}
                 >
                     {toDoText}
-                    <BTN onClick={onClick}><FaRegTrashAlt /></BTN>
+                    <BTN onClick={onDelete}><FaRegTrashAlt /></BTN>
                 </Card>
             )}
         </Draggable>
