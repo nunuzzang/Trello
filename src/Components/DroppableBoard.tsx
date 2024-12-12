@@ -40,7 +40,6 @@ const Form = styled.form`
 
 function DroppableBoard({ toDos, boardId }: IBoardProps) {
     const setToDos = useSetRecoilState(toDoState);
-
     const { register, setValue, handleSubmit } = useForm<IForm>();
     const onValid = ({ toDo }: IForm) => {
         const newToDo = {
@@ -65,7 +64,6 @@ function DroppableBoard({ toDos, boardId }: IBoardProps) {
                 />
             </Form>
             <Droppable droppableId={boardId}>
-
                 {(magic, info) => (
                     <Area
                         isDraggingOver={info.isDraggingOver}

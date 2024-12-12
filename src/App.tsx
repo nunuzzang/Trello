@@ -3,10 +3,11 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState } from "./atoms";
 import Board from "./Components/Boards";
+import AddBoard from "./Components/AddBoard";
 
 const Wrapper = styled.div`
   display: flex;
-  max-width: 680px;
+  max-width: 90%;
   width: 100%;
   margin: 0 auto;
   justify-content: center;
@@ -69,6 +70,7 @@ function App() {
       <Wrapper>
         <Boards>
           {Object.keys(toDos).map((boardId) => <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />)}
+          <AddBoard /> {/* 보드 추가 컴포넌트 */}
         </Boards>
       </Wrapper>
     </DragDropContext>

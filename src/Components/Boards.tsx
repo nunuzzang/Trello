@@ -1,13 +1,9 @@
-import { useForm } from "react-hook-form";
-import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
-import { IToDo, toDoState } from "../atoms";
-import { useSetRecoilState } from "recoil";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { IToDo } from "../atoms";
 import DroppableBoard from "./DroppableBoard";
 
 const Wrapper = styled.div`
-  width: 300px;
+  width: 200px;
   padding-top: 10px;
   background-color: ${(props) => props.theme.boardColor};
   border-radius: 5px;
@@ -29,14 +25,10 @@ interface IBoardProps {
     boardId: string;
 }
 
-
 function Board({ toDos, boardId }: IBoardProps) {
-
-
     return (
         <Wrapper>
             <Title>{boardId}</Title>
-
             <DroppableBoard toDos={toDos} boardId={boardId} />
         </Wrapper>
     );
