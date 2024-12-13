@@ -8,26 +8,28 @@ import { CiSquarePlus } from "react-icons/ci";
 const Form = styled.form`
   width: 200px;
   padding-top: 10px;
-  background-color: ${(props) => props.theme.boardColor};
+  background-color: #DADFE9;
   border-radius: 5px;
   min-height: 300px;
   display: flex;
   flex-direction: column;
+  align-items:center;
   overflow: hidden;
+  opacity: 0.8;
 `;
 
 const Input = styled.input`
+  width: 80%;
+  height: 50px;
   padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  margin-top: 30px;
+  border-radius: 10px;
+  border: none;
+  &:focus{
+        outline: none;
+    }
 `;
 
-
-
-interface IForm {
-    category: string;
-}
 
 const IconStyle = styled(CiSquarePlus)`
     width: 100px;
@@ -41,8 +43,13 @@ const IconStyle = styled(CiSquarePlus)`
 const AddBoardBTN = styled.button`
     background-color: inherit;
     border: none;
-    margin-top: 50px;
+    margin-top: 20px;
 `;
+
+interface IForm {
+    category: string;
+}
+
 
 function AddBoard() {
     const setToDos = useSetRecoilState(toDoState);
@@ -60,7 +67,7 @@ function AddBoard() {
     return (
         <Form onSubmit={handleSubmit(addBoard)}>
             <Input
-                {...register("category", { required: true })}
+                {...register("category", { required: true, maxLength: 14 })}
                 type="text"
                 placeholder="보드 추가"
             />

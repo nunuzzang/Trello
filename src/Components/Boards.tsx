@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { IToDo, toDoState } from "../atoms";
 import DroppableBoard from "./DroppableBoard";
 import { useSetRecoilState } from "recoil";
+import { TiDeleteOutline } from "react-icons/ti";
 
 const Wrapper = styled.div`
   width: 200px;
@@ -15,10 +16,13 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h2`
+  width: 80%;
   text-align: center;
   font-weight: 600;
   margin-bottom: 10px;
   font-size: 18px;
+  position: relative;
+  right: -33px;
 `;
 
 interface IBoardProps {
@@ -32,7 +36,25 @@ interface IToDoState {
   [key: string]: IToDo[];
 }
 
+const HeadWrap = styled.div`
+  display: grid;
+  grid-template-columns: 6fr 1fr;
+`;
 
+const DeleteBTN = styled.button`
+  background-color: inherit;
+  border: none;
+`;
+
+const ICone = styled(TiDeleteOutline)`
+  width: 20px;
+  height: 20px;
+  color: white;
+  &:hover{
+    color:#b2bec3;
+    transition: color 0.3s ease-in-out;
+  }
+`;
 function Board({ toDos, boardId }: IBoardProps) {
   const setTodoState = useSetRecoilState(toDoState);
   const onDelte = () => {
@@ -51,8 +73,10 @@ function Board({ toDos, boardId }: IBoardProps) {
   };
   return (
     <Wrapper>
-      <Title>{boardId}</Title>
-      <button onClick={onDelte}>delete</button>
+      <HeadWrap>
+        <Title>{boardId}</Title>
+        <DeleteBTN onClick={onDelte}><ICone /></DeleteBTN>
+      </HeadWrap>
       <DroppableBoard toDos={toDos} boardId={boardId} />
     </Wrapper>
   );

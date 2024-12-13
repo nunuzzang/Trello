@@ -32,9 +32,19 @@ interface IForm {
 
 const Form = styled.form`
   width: 100%;
-  input {
-    width: 100%;
-  }
+  display: flex;
+  justify-content: center;
+  border: none;
+`;
+const INPUT = styled.input`
+    width: 80%;
+    height: 60px;
+    padding: 10px;
+    border-radius: 15px;
+    border: none;
+    &:focus{
+        outline: none;
+    }
 `;
 
 
@@ -57,7 +67,7 @@ function DroppableBoard({ toDos, boardId }: IBoardProps) {
     return (
         <>
             <Form onSubmit={handleSubmit(onValid)}>
-                <input
+                <INPUT
                     {...register("toDo", { required: true })}
                     type="text"
                     placeholder={`Add task on ${boardId}`}
@@ -82,7 +92,6 @@ function DroppableBoard({ toDos, boardId }: IBoardProps) {
                         {magic.placeholder}
                     </Area>
                 )}
-
             </Droppable>
         </>
     )

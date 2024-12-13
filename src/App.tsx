@@ -5,7 +5,7 @@ import { toDoState } from "./atoms";
 import Board from "./Components/Boards";
 import AddBoard from "./Components/AddBoard";
 
-const Wrapper = styled.div`
+/* const Wrapper = styled.div`
   display: flex;
   max-width: 90%;
   width: 100%;
@@ -22,7 +22,28 @@ const Boards = styled.div`
   width: 100%;
   gap: 10px;
 `;
+ */
 
+const Wrapper = styled.div`
+  background-color: #87b7f5;
+  display: flex;
+  max-width: 90%;
+  width: 100%;
+  margin: 0 auto;
+  height: 90vh;
+  align-items: flex-start;
+  margin-top: 50px;
+  padding-left: 50px;
+  border-radius: 25px;
+`;
+
+const Boards = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 50px 0;
+  gap: 10px;
+`;
 
 
 function App() {
